@@ -15,7 +15,10 @@ UGetGameSessionLogUrl_Async* UGetGameSessionLogUrl_Async::GetGameSessionLogUrl(F
 void UGetGameSessionLogUrl_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::GetGameSessionLogUrlRequest Request;
-	Request.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
+	if(!Var_GameSessionId.IsEmpty())
+	{
+		Request.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::GetGameSessionLogUrlRequest& Request, const Aws::GameLift::Model::GetGameSessionLogUrlOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) {
 		if (Outcome.IsSuccess())
 		{

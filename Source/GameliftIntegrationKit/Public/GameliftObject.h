@@ -206,7 +206,7 @@ struct FGameLiftSetup
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnGameliftSetupSuccess, bool, bIsSuccess);
 
 UCLASS()
-class GAMELIFTINTEGRATIONKIT_API UGameliftObject : public UObject
+class GAMELIFTINTEGRATIONKIT_API UGameliftObject : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
@@ -217,6 +217,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit", meta=(WorldContext="WorldContextObject"))
 	static bool ShutdownGameLift(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit", meta=(WorldContext="WorldContextObject"))
+	static void SetupServer(UObject* WorldContextObject);
 	
 	Aws::Client::ClientConfiguration* Var_ClientConfig = nullptr;
 	Aws::GameLift::GameLiftClient* Var_GameLiftClient = nullptr;

@@ -23,9 +23,18 @@ UUpdateGameSession_Async* UUpdateGameSession_Async::UpdateGameSession(const TArr
 void UUpdateGameSession_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::UpdateGameSessionRequest Request;
-	Request.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
-	Request.SetMaximumPlayerSessionCount(Var_MaximumPlayerSessionCount);
-	Request.SetName(TCHAR_TO_UTF8(*Var_Name));
+	if(!Var_GameSessionId.IsEmpty())
+	{
+		Request.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
+	}
+	if(Var_MaximumPlayerSessionCount > 0)
+	{
+		Request.SetMaximumPlayerSessionCount(Var_MaximumPlayerSessionCount);
+	}
+	if(!Var_Name.IsEmpty())
+	{
+		Request.SetName(TCHAR_TO_UTF8(*Var_Name));
+	}
 	Request.SetPlayerSessionCreationPolicy(static_cast<Aws::GameLift::Model::PlayerSessionCreationPolicy>(Var_PlayerSessionCreationPolicy.GetValue()));
 	Request.SetProtectionPolicy(static_cast<Aws::GameLift::Model::ProtectionPolicy>(Var_ProtectionPolicy.GetValue()));
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::UpdateGameSessionRequest&, const Aws::GameLift::Model::UpdateGameSessionOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)

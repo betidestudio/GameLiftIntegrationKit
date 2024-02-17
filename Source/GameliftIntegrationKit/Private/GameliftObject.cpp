@@ -7,7 +7,11 @@
 #include "UObjectIterator.h"
 #include "aws/core/Aws.h"
 #include "aws/core/auth/AWSCredentials.h"
-
+#ifdef WITH_GAMELIFT
+#if WITH_GAMELIFT
+#include "GameLiftServerSDK/Public/GameliftServerSubsystem.h"
+#endif
+#endif
 void UGameliftObject::InitGameLift(UObject* WorldContextObject, FGameLiftSetup Settings, FOnGameliftSetupSuccess OnGameliftSetupSuccess)
 {
 	Aws::SDKOptions options;
@@ -29,6 +33,7 @@ void UGameliftObject::InitGameLift(UObject* WorldContextObject, FGameLiftSetup S
 		{
 			AwsObject = NewObject<UGameliftObject>();
 		}
+		AwsObject->GameLiftSetup = Settings;
 		if(AwsObject)
 		{
 			AsyncTask(ENamedThreads::GameThread, [=]()
@@ -48,14 +53,22 @@ void UGameliftObject::InitGameLift(UObject* WorldContextObject, FGameLiftSetup S
 				Aws::Auth::AWSCredentials* Var_AWSCredentials = nullptr;
 				if(AwsObject->GameLiftSetup.Credentials.AccessKeyId.Len()>0 && AwsObject->GameLiftSetup.Credentials.SecretAccessKey.Len()>0)
 				{
+					UE_LOG(LogTemp, Warning, TEXT("Using Credentials"));
 					Var_AWSCredentials = new Aws::Auth::AWSCredentials(TCHAR_TO_UTF8(*AwsObject->GameLiftSetup.Credentials.AccessKeyId), TCHAR_TO_UTF8(*AwsObject->GameLiftSetup.Credentials.SecretAccessKey), TCHAR_TO_UTF8(*AwsObject->GameLiftSetup.Credentials.SessionToken));
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("AccessKeyId length: %d"), AwsObject->GameLiftSetup.Credentials.AccessKeyId.Len());
+					UE_LOG(LogTemp, Warning, TEXT("SecretAccessKey length: %d"), AwsObject->GameLiftSetup.Credentials.SecretAccessKey.Len());
 				}
 				if(Var_AWSCredentials)
 				{
+					UE_LOG(LogTemp, Warning, TEXT("Using Credentials 12"));
 					AwsObject->Var_GameLiftClient = new Aws::GameLift::GameLiftClient(*Var_AWSCredentials,*Var_ClientConfig);
 				}
 				else
 				{
+					UE_LOG(LogTemp, Warning, TEXT("Using Credentials 13"));
 					AwsObject->Var_GameLiftClient = new Aws::GameLift::GameLiftClient(*Var_ClientConfig);
 				}
 				OnGameliftSetupSuccess.ExecuteIfBound(true);
@@ -78,4 +91,29 @@ bool UGameliftObject::ShutdownGameLift(UObject* WorldContextObject)
 	options.loggingOptions.logLevel = Aws::Utils::Logging::LogLevel::Info;
 	Aws::ShutdownAPI(options);
 	return true;
+}
+
+void UGameliftObject::SetupServer(UObject* WorldContextObject)
+{
+#ifdef WITH_GAMELIFT
+#if WITH_GAMELIFT
+	UGameliftServerSubsystem* AwsObject = nullptr;
+	TArray<UGameliftServerSubsystem*> Objects;
+	for (TObjectIterator<UGameliftServerSubsystem> Itr; Itr; ++Itr)
+	{
+		Objects.Add(*Itr);
+	}
+	if(Objects.Num()>0)
+	{
+		AwsObject = Objects[0];
+	}
+	else
+	{
+		return;
+	}
+	AwsObject->InitSDK();
+#else
+	UE_LOG(LogTemp, Warning, TEXT("WITH_GAMELIFT is not defined"));
+#endif
+#endif
 }

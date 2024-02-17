@@ -19,7 +19,7 @@ class GAMELIFTINTEGRATIONKIT_API UStartGameSessionPlacement_Async : public UGame
 public:
 
 	UFUNCTION(BlueprintCallable,meta=(BlueprintInternalUseOnly = "true",DisplayName="Start Game Session Placement"), Category = "AWS Integration Kit|GameLift")
-	static UStartGameSessionPlacement_Async* StartGameSessionPlacement(TArray<FDesiredPlayerSession> DesiredPlayerSessions, TArray<FGameProperty> GameProperties, FString GameSessionData, FString GameSessionName, FString GameSessionQueueName, int32 MaxPlayerSessionCount, FString PlacementId, TArray<FPlayerLatency> PlayerLatencies);
+	static UStartGameSessionPlacement_Async* StartGameSessionPlacement(TArray<FDesiredPlayerSession> DesiredPlayerSessions, TArray<FGameProperty> GameProperties, FString GameSessionData, FString AwsGameSessionName, FString GameSessionQueueName, int32 MaxPlayerSessionCount, FString PlacementId, TArray<FPlayerLatency> PlayerLatencies);
 
 
 	virtual void ContinueProcess(UGameliftObject* AWSObject) override;

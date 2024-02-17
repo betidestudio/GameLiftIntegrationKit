@@ -19,9 +19,18 @@ UCreatePlayerSession_Async* UCreatePlayerSession_Async::CreatePlayerSession(FStr
 void UCreatePlayerSession_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::CreatePlayerSessionRequest GameliftRequest;
-	GameliftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
-	GameliftRequest.SetPlayerId(TCHAR_TO_UTF8(*Var_PlayerId));
-	GameliftRequest.SetPlayerData(TCHAR_TO_UTF8(*Var_PlayerData));
+	if(!Var_GameSessionId.IsEmpty())
+	{
+		GameliftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
+	}
+	if(!Var_PlayerId.IsEmpty())
+	{
+		GameliftRequest.SetPlayerId(TCHAR_TO_UTF8(*Var_PlayerId));
+	}
+	if(!Var_PlayerData.IsEmpty())
+	{
+		GameliftRequest.SetPlayerData(TCHAR_TO_UTF8(*Var_PlayerData));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::CreatePlayerSessionRequest&, const Aws::GameLift::Model::CreatePlayerSessionOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()

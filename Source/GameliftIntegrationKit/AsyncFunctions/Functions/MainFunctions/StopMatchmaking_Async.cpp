@@ -21,7 +21,10 @@ void UStopMatchmaking_Async::ExecuteFailure(FGameLiftError Error)
 void UStopMatchmaking_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::StopMatchmakingRequest GameLiftRequest;
-	GameLiftRequest.SetTicketId(TCHAR_TO_UTF8(*Var_TicketId));
+	if(!Var_TicketId.IsEmpty())
+	{
+		GameLiftRequest.SetTicketId(TCHAR_TO_UTF8(*Var_TicketId));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::StopMatchmakingRequest&, const Aws::GameLift::Model::StopMatchmakingOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()
@@ -42,6 +45,5 @@ void UStopMatchmaking_Async::ContinueProcess(UGameliftObject* AWSObject)
 			}
 		});
 	};
-	
 	AWSObject->Var_GameLiftClient->StopMatchmakingAsync(GameLiftRequest, AsyncCallback);
 }

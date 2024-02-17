@@ -15,7 +15,10 @@ UValidateMatchmakingRuleSet_Async* UValidateMatchmakingRuleSet_Async::ValidateMa
 void UValidateMatchmakingRuleSet_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::ValidateMatchmakingRuleSetRequest GameLiftRequest;
-	GameLiftRequest.SetRuleSetBody(TCHAR_TO_UTF8(*Var_RuleSetBody));
+	if(!Var_RuleSetBody.IsEmpty())
+	{
+		GameLiftRequest.SetRuleSetBody(TCHAR_TO_UTF8(*Var_RuleSetBody));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::ValidateMatchmakingRuleSetRequest&, const Aws::GameLift::Model::ValidateMatchmakingRuleSetOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()

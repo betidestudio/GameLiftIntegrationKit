@@ -16,7 +16,10 @@ UStopGameSessionPlacement_Async* UStopGameSessionPlacement_Async::StopGameSessio
 void UStopGameSessionPlacement_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::StopGameSessionPlacementRequest GameLiftRequest;
-	GameLiftRequest.SetPlacementId(TCHAR_TO_UTF8(*Var_PlacementId));
+	if(!Var_PlacementId.IsEmpty())
+	{
+		GameLiftRequest.SetPlacementId(TCHAR_TO_UTF8(*Var_PlacementId));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::StopGameSessionPlacementRequest&, const Aws::GameLift::Model::StopGameSessionPlacementOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()

@@ -23,13 +23,31 @@ UDescribeGameSessions_Async* UDescribeGameSessions_Async::DescribeGameSessions(F
 void UDescribeGameSessions_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::DescribeGameSessionsRequest GameLiftRequest;
-	GameLiftRequest.SetAliasId(TCHAR_TO_UTF8(*Var_AliasId));
-	GameLiftRequest.SetFleetId(TCHAR_TO_UTF8(*Var_FleetId));
-	GameLiftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
+	if(!Var_AliasId.IsEmpty())
+	{
+		GameLiftRequest.SetAliasId(TCHAR_TO_UTF8(*Var_AliasId));
+	}
+	if(!Var_FleetId.IsEmpty())
+	{
+		GameLiftRequest.SetFleetId(TCHAR_TO_UTF8(*Var_FleetId));
+	}
+	if(!Var_GameSessionId.IsEmpty())
+	{
+		GameLiftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
+	}
 	GameLiftRequest.SetLimit(Var_Limit);
-	GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_NextToken));
-	GameLiftRequest.SetLocation(TCHAR_TO_UTF8(*Var_Location));
-	GameLiftRequest.SetStatusFilter(TCHAR_TO_UTF8(*Var_GameSessionStatusFilter));
+	if(!Var_NextToken.IsEmpty())
+	{
+		GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_NextToken));
+	}
+	if(!Var_Location.IsEmpty())
+	{
+		GameLiftRequest.SetLocation(TCHAR_TO_UTF8(*Var_Location));
+	}
+	if(!Var_GameSessionStatusFilter.IsEmpty())
+	{
+		GameLiftRequest.SetStatusFilter(TCHAR_TO_UTF8(*Var_GameSessionStatusFilter));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::DescribeGameSessionsRequest&, const Aws::GameLift::Model::DescribeGameSessionsOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()

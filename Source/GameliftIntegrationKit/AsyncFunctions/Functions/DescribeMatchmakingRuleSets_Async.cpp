@@ -17,10 +17,16 @@ void UDescribeMatchmakingRuleSets_Async::ContinueProcess(UGameliftObject* AWSObj
 {
 	Aws::GameLift::Model::DescribeMatchmakingRuleSetsRequest GameLiftRequest;
 	GameLiftRequest.SetLimit(Var_Request.Limit);
-	GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_Request.NextToken));
-	for (FString Name : Var_Request.Names)
+	if(!Var_Request.NextToken.IsEmpty())
 	{
-		GameLiftRequest.AddNames(TCHAR_TO_UTF8(*Name));
+		GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_Request.NextToken));
+	}
+	if(Var_Request.Names.Num() > 0)
+	{
+		for (FString Name : Var_Request.Names)
+		{
+			GameLiftRequest.AddNames(TCHAR_TO_UTF8(*Name));
+		}
 	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient* Client, const Aws::GameLift::Model::DescribeMatchmakingRuleSetsRequest& Request, const Aws::GameLift::Model::DescribeMatchmakingRuleSetsOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext> Context)
 	{

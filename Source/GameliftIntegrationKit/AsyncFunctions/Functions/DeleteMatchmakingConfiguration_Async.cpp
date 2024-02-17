@@ -16,7 +16,10 @@ DeleteMatchmakingConfiguration(FString Name)
 void UDeleteMatchmakingConfiguration_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::DeleteMatchmakingConfigurationRequest GameLiftRequest;
-	GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Name));
+	if(!Var_Name.IsEmpty())
+	{
+		GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Name));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient* Client, const Aws::GameLift::Model::DeleteMatchmakingConfigurationRequest& Request, const Aws::GameLift::Model::DeleteMatchmakingConfigurationOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext> Context)
 	{
 		AsyncTask(ENamedThreads::GameThread, [Outcome, this]()

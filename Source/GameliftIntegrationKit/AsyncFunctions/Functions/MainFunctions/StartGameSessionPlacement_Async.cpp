@@ -8,14 +8,14 @@
 
 UStartGameSessionPlacement_Async* UStartGameSessionPlacement_Async::StartGameSessionPlacement(
 	TArray<FDesiredPlayerSession> DesiredPlayerSessions, TArray<FGameProperty> GameProperties, FString GameSessionData,
-	FString GameSessionName, FString GameSessionQueueName, int32 MaxPlayerSessionCount, FString PlacementId,
+	FString AwsGameSessionName, FString GameSessionQueueName, int32 MaxPlayerSessionCount, FString PlacementId,
 	TArray<FPlayerLatency> PlayerLatencies)
 {
 	UStartGameSessionPlacement_Async* Obj = NewObject<UStartGameSessionPlacement_Async>();
 	Obj->Var_DesiredPlayerSessions = DesiredPlayerSessions;
 	Obj->Var_GameProperties = GameProperties;
 	Obj->Var_GameSessionData = GameSessionData;
-	Obj->Var_GameSessionName = GameSessionName;
+	Obj->Var_GameSessionName = AwsGameSessionName;
 	Obj->Var_GameSessionQueueName = GameSessionQueueName;
 	Obj->Var_MaxPlayerSessionCount = MaxPlayerSessionCount;
 	Obj->Var_PlacementId = PlacementId;
@@ -26,22 +26,46 @@ UStartGameSessionPlacement_Async* UStartGameSessionPlacement_Async::StartGameSes
 void UStartGameSessionPlacement_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::StartGameSessionPlacementRequest Request;
-	Request.SetGameSessionQueueName(TCHAR_TO_UTF8(*Var_GameSessionQueueName));
-	Request.SetPlacementId(TCHAR_TO_UTF8(*Var_PlacementId));
-	for (auto& Local_DesiredPlayerSession : Var_DesiredPlayerSessions)
+	if (!Var_GameSessionQueueName.IsEmpty())
 	{
-		Request.AddDesiredPlayerSessions(Local_DesiredPlayerSession.ToDesiredPlayerSession());
+		Request.SetGameSessionQueueName(TCHAR_TO_UTF8(*Var_GameSessionQueueName));
 	}
-	for (auto& GameProperty : Var_GameProperties)
+	if(!Var_PlacementId.IsEmpty())
 	{
-		Request.AddGameProperties(GameProperty.ToGameProperty());
+		Request.SetPlacementId(TCHAR_TO_UTF8(*Var_PlacementId));
 	}
-	Request.SetGameSessionData(TCHAR_TO_UTF8(*Var_GameSessionData));
-	Request.SetGameSessionName(TCHAR_TO_UTF8(*Var_GameSessionName));
-	Request.SetMaximumPlayerSessionCount(Var_MaxPlayerSessionCount);
-	for (auto& PlayerLatency : Var_PlayerLatencies)
+	if(Var_DesiredPlayerSessions.Num() > 0)
 	{
-		Request.AddPlayerLatencies(PlayerLatency.ToPlayerLatency());
+		for (auto& Local_DesiredPlayerSession : Var_DesiredPlayerSessions)
+		{
+			Request.AddDesiredPlayerSessions(Local_DesiredPlayerSession.ToDesiredPlayerSession());
+		}
+	}
+	if(Var_GameProperties.Num() > 0)
+	{
+		for (auto& GameProperty : Var_GameProperties)
+		{
+			Request.AddGameProperties(GameProperty.ToGameProperty());
+		}
+	}
+	if(!Var_GameSessionData.IsEmpty())
+	{
+		Request.SetGameSessionData(TCHAR_TO_UTF8(*Var_GameSessionData));
+	}
+	if(!Var_GameSessionName.IsEmpty())
+	{
+		Request.SetGameSessionName(TCHAR_TO_UTF8(*Var_GameSessionName));
+	}
+	if(Var_MaxPlayerSessionCount > 0)
+	{
+		Request.SetMaximumPlayerSessionCount(Var_MaxPlayerSessionCount);
+	}
+	if(Var_PlayerLatencies.Num() > 0)
+	{
+		for (auto& PlayerLatency : Var_PlayerLatencies)
+		{
+			Request.AddPlayerLatencies(PlayerLatency.ToPlayerLatency());
+		}
 	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::StartGameSessionPlacementRequest&, const Aws::GameLift::Model::StartGameSessionPlacementOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{

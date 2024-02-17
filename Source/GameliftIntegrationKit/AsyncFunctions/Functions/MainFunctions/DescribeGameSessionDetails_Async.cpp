@@ -23,12 +23,31 @@ UDescribeGameSessionDetails_Async* UDescribeGameSessionDetails_Async::DescribeGa
 void UDescribeGameSessionDetails_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::DescribeGameSessionDetailsRequest Request;
-	Request.SetAliasId(TCHAR_TO_UTF8(*Var_AliasID));
-	Request.SetFleetId(TCHAR_TO_UTF8(*Var_FleetID));
-	Request.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionID));
+	if(!Var_AliasID.IsEmpty())
+	{
+		Request.SetAliasId(TCHAR_TO_UTF8(*Var_AliasID));
+	}
+	if(!Var_FleetID.IsEmpty())
+	{
+		Request.SetFleetId(TCHAR_TO_UTF8(*Var_FleetID));
+	}
+	if(!Var_GameSessionID.IsEmpty())
+	{
+		Request.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionID));
+	}
 	Request.SetLimit(Var_Limit);
-	Request.SetNextToken(TCHAR_TO_UTF8(*Var_NextToken));
-	Request.SetStatusFilter(TCHAR_TO_UTF8(*Var_StatusFilter));
+	if(!Var_Location.IsEmpty())
+	{
+		Request.SetLocation(TCHAR_TO_UTF8(*Var_Location));
+	}
+	if(!Var_NextToken.IsEmpty())
+	{
+		Request.SetNextToken(TCHAR_TO_UTF8(*Var_NextToken));
+	}
+	if(!Var_StatusFilter.IsEmpty())
+	{
+		Request.SetStatusFilter(TCHAR_TO_UTF8(*Var_StatusFilter));
+	}
 
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::DescribeGameSessionDetailsRequest&, const Aws::GameLift::Model::DescribeGameSessionDetailsOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{

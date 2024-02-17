@@ -27,18 +27,48 @@ UCreateGameSession_Async* UCreateGameSession_Async::CreateGameSession(FString Al
 void UCreateGameSession_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::CreateGameSessionRequest GameliftRequest;
-	GameliftRequest.SetAliasId(TCHAR_TO_UTF8(*Var_AliasId));
-	GameliftRequest.SetCreatorId(TCHAR_TO_UTF8(*Var_CreatorId));
-	GameliftRequest.SetFleetId(TCHAR_TO_UTF8(*Var_FleetId));
-	GameliftRequest.SetGameSessionData(TCHAR_TO_UTF8(*Var_GameSessionData));
-	GameliftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
-	GameliftRequest.SetIdempotencyToken(TCHAR_TO_UTF8(*Var_IdempotencyToken));
-	GameliftRequest.SetName(TCHAR_TO_UTF8(*Var_Name));
-	GameliftRequest.SetMaximumPlayerSessionCount(Var_MaximumPlayerSessionCount);
-	GameliftRequest.SetLocation(TCHAR_TO_UTF8(*Var_Location));
-	for (FGameProperty Property : Var_GameProperties)
+	if(!Var_AliasId.IsEmpty())
 	{
-		GameliftRequest.AddGameProperties(Property.ToGameProperty());
+		GameliftRequest.SetAliasId(TCHAR_TO_UTF8(*Var_AliasId));
+	}
+	if(!Var_CreatorId.IsEmpty())
+	{
+		GameliftRequest.SetCreatorId(TCHAR_TO_UTF8(*Var_CreatorId));
+	}
+	if(!Var_FleetId.IsEmpty())
+	{
+		GameliftRequest.SetFleetId(TCHAR_TO_UTF8(*Var_FleetId));
+	}
+	if (!Var_GameSessionData.IsEmpty())
+	{
+		GameliftRequest.SetGameSessionData(TCHAR_TO_UTF8(*Var_GameSessionData));
+	}
+	if (!Var_GameSessionId.IsEmpty())
+	{
+		GameliftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
+	}
+	if(!Var_IdempotencyToken.IsEmpty())
+	{
+		GameliftRequest.SetIdempotencyToken(TCHAR_TO_UTF8(*Var_IdempotencyToken));
+	}
+	if(!Var_Name.IsEmpty())
+	{
+		GameliftRequest.SetName(TCHAR_TO_UTF8(*Var_Name));
+	}
+	if(Var_MaximumPlayerSessionCount > 0)
+	{
+		GameliftRequest.SetMaximumPlayerSessionCount(Var_MaximumPlayerSessionCount);
+	}
+	if(!Var_Location.IsEmpty())
+	{
+		GameliftRequest.SetLocation(TCHAR_TO_UTF8(*Var_Location));
+	}
+	if(Var_GameProperties.Num() > 0)
+	{
+		for (FGameProperty Property : Var_GameProperties)
+		{
+			GameliftRequest.AddGameProperties(Property.ToGameProperty());
+		}
 	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::CreateGameSessionRequest&, const Aws::GameLift::Model::CreateGameSessionOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{

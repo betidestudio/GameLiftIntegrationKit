@@ -20,12 +20,21 @@ void UStartMatchmaking_Async::ExecuteFailure(FGameLiftError Error)
 void UStartMatchmaking_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::StartMatchmakingRequest GameliftRequest;
-	GameliftRequest.SetConfigurationName(TCHAR_TO_UTF8(*Var_Request.ConfigurationName));
-	for (FGameliftPlayer Player : Var_Request.Players)
+	if(!Var_Request.ConfigurationName.IsEmpty())
 	{
-		GameliftRequest.AddPlayers(Player.ToGameliftPlayer());
+		GameliftRequest.SetConfigurationName(TCHAR_TO_UTF8(*Var_Request.ConfigurationName));
 	}
-	GameliftRequest.SetTicketId(TCHAR_TO_UTF8(*Var_Request.TicketId));
+	if(!Var_Request.Players.IsEmpty())
+	{
+		for (FGameliftPlayer Player : Var_Request.Players)
+		{
+			GameliftRequest.AddPlayers(Player.ToGameliftPlayer());
+		}
+	}
+	if(!Var_Request.TicketId.IsEmpty())
+	{
+		GameliftRequest.SetTicketId(TCHAR_TO_UTF8(*Var_Request.TicketId));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::StartMatchmakingRequest&, const Aws::GameLift::Model::StartMatchmakingOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()

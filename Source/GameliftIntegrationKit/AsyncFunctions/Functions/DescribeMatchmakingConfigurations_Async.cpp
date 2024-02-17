@@ -16,15 +16,24 @@ UDescribeMatchmakingConfigurations_Async* UDescribeMatchmakingConfigurations_Asy
 void UDescribeMatchmakingConfigurations_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::DescribeMatchmakingConfigurationsRequest GameLiftRequest;
-	Aws::Vector<Aws::String> Names;
-	for(int32 i = 0; i < Var_Request.Names.Num(); i++)
+	if(Var_Request.Names.Num() > 0)
 	{
-		Names.push_back(TCHAR_TO_UTF8(*Var_Request.Names[i]));
+		Aws::Vector<Aws::String> Names;
+		for(int32 i = 0; i < Var_Request.Names.Num(); i++)
+		{
+			Names.push_back(TCHAR_TO_UTF8(*Var_Request.Names[i]));
+		}
+		GameLiftRequest.SetNames(Names);
 	}
-	GameLiftRequest.SetNames(Names);
-	GameLiftRequest.SetRuleSetName(TCHAR_TO_UTF8(*Var_Request.RuleSetName));
+	if(!Var_Request.RuleSetName.IsEmpty())
+	{
+		GameLiftRequest.SetRuleSetName(TCHAR_TO_UTF8(*Var_Request.RuleSetName));
+	}
 	GameLiftRequest.SetLimit(Var_Request.Limit);
-	GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_Request.NextToken));
+	if(!Var_Request.NextToken.IsEmpty())
+	{
+		GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_Request.NextToken));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient* Client, const Aws::GameLift::Model::DescribeMatchmakingConfigurationsRequest& Request, const Aws::GameLift::Model::DescribeMatchmakingConfigurationsOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext> Context)
 	{
 		AsyncTask(ENamedThreads::GameThread, [Outcome, this]()

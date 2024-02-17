@@ -17,7 +17,10 @@ UDescribeGameSessionPlacement_Async* UDescribeGameSessionPlacement_Async::Descri
 void UDescribeGameSessionPlacement_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::DescribeGameSessionPlacementRequest GameLiftRequest;
-	GameLiftRequest.SetPlacementId(TCHAR_TO_UTF8(*Var_PlacementId));
+	if(!Var_PlacementId.IsEmpty())
+	{
+		GameLiftRequest.SetPlacementId(TCHAR_TO_UTF8(*Var_PlacementId));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::DescribeGameSessionPlacementRequest&, const Aws::GameLift::Model::DescribeGameSessionPlacementOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()

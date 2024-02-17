@@ -6,7 +6,7 @@
 	"Description": "GameLift Integration Kit for Unreal Engine 5 and 4 is a plugin that allows you to integrate your game with Amazon GameLift with support for FlexMatch.", 
 	"Category": "Betide Studio Plugins",
 	"CreatedBy": "Betide Studio",
-	"EngineVersion": "4.23",
+	"EngineVersion": "5.3",
 	"CreatedByURL": "https://betide.studio",
 	"DocsURL": "https://aws.betide.studio/gamelift/",
 	"MarketplaceURL": "",
@@ -19,7 +19,13 @@
 			"Name": "GameliftIntegrationKit",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": ["Win64"]
+			"WhitelistPlatforms": ["Win64"],
+			"BlacklistTargets": ["Server"]
+		},
+		{
+			"Name": "GameLiftServerSDK",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
 		}
 	]
 }

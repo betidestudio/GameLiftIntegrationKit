@@ -19,14 +19,23 @@ UCreatePlayerSessions_Async* UCreatePlayerSessions_Async::CreatePlayerSessions(F
 void UCreatePlayerSessions_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::CreatePlayerSessionsRequest GameLiftRequest;
-	GameLiftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
-	for (FString PlayerId : Var_PlayerIds)
+	if(!Var_GameSessionId.IsEmpty())
 	{
-		GameLiftRequest.AddPlayerIds(TCHAR_TO_UTF8(*PlayerId));
+		GameLiftRequest.SetGameSessionId(TCHAR_TO_UTF8(*Var_GameSessionId));
 	}
-	for (auto& Elem : Var_PlayerDataMap)
+	if(Var_PlayerIds.Num() > 0)
 	{
-		GameLiftRequest.AddPlayerDataMap(TCHAR_TO_UTF8(*Elem.Key), TCHAR_TO_UTF8(*Elem.Value));
+		for (FString PlayerId : Var_PlayerIds)
+		{
+			GameLiftRequest.AddPlayerIds(TCHAR_TO_UTF8(*PlayerId));
+		}
+	}
+	if(Var_PlayerDataMap.Num() > 0)
+	{
+		for (auto& Elem : Var_PlayerDataMap)
+		{
+			GameLiftRequest.AddPlayerDataMap(TCHAR_TO_UTF8(*Elem.Key), TCHAR_TO_UTF8(*Elem.Value));
+		}
 	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::CreatePlayerSessionsRequest&, const Aws::GameLift::Model::CreatePlayerSessionsOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{

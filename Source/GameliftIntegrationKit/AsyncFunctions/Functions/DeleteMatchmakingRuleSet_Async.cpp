@@ -15,9 +15,10 @@ UDeleteMatchmakingRuleSet_Async* UDeleteMatchmakingRuleSet_Async::DeleteMatchmak
 void UDeleteMatchmakingRuleSet_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::DeleteMatchmakingRuleSetRequest GameLiftRequest;
-
-	GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Name));
-	
+	if(!Var_Name.IsEmpty())
+	{
+		GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Name));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient* Client, const Aws::GameLift::Model::DeleteMatchmakingRuleSetRequest& Request, const Aws::GameLift::Model::DeleteMatchmakingRuleSetOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext> Context)
 	{
 		AsyncTask(ENamedThreads::GameThread, [this, Outcome]()

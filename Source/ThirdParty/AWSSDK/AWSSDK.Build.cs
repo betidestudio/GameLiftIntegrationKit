@@ -28,12 +28,14 @@ public class AWSSDK : ModuleRules
     {
         Type = ModuleType.External;
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+        bEnableExceptions = true;
 
         // add the header files for reference
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Include"));
         bEnableUndefinedIdentifierWarnings = false;
         PublicDefinitions.Add("USE_IMPORT_EXPORT");
         PublicDefinitions.Add("AWS_CRT_CPP_USE_IMPORT_EXPORT");
+        PublicDefinitions.Add("AWS_USE_IO_COMPLETION_PORTS");
 
 
         if (Target.Platform == UnrealTargetPlatform.Win64)

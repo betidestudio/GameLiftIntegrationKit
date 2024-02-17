@@ -22,29 +22,62 @@ void UUpdateMatchmakingConfiguration_Async::ContinueProcess(UGameliftObject* AWS
 {
 	Aws::GameLift::Model::UpdateMatchmakingConfigurationRequest GameLiftRequest;
 	GameLiftRequest.SetAcceptanceRequired(Var_Request.bAcceptanceRequired);
-	GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Request.Name));
-	GameLiftRequest.SetRequestTimeoutSeconds(Var_Request.RequestTimeoutSeconds);
-	GameLiftRequest.SetRuleSetName(TCHAR_TO_UTF8(*Var_Request.RuleSetName));
-	GameLiftRequest.SetAcceptanceTimeoutSeconds(Var_Request.AcceptanceTimeoutSeconds);
-	GameLiftRequest.SetAdditionalPlayerCount(Var_Request.AdditionalPlayerCount);
+	if(!Var_Request.Name.IsEmpty())
+	{
+		GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Request.Name));
+	}
+	if(Var_Request.RequestTimeoutSeconds > 0)
+	{
+		GameLiftRequest.SetRequestTimeoutSeconds(Var_Request.RequestTimeoutSeconds);
+	}
+	if(!Var_Request.RuleSetName.IsEmpty())
+	{
+		GameLiftRequest.SetRuleSetName(TCHAR_TO_UTF8(*Var_Request.RuleSetName));
+	}
+	if(Var_Request.AcceptanceTimeoutSeconds > 0)
+	{
+		GameLiftRequest.SetAcceptanceTimeoutSeconds(Var_Request.AcceptanceTimeoutSeconds);
+	}
+	if(Var_Request.AdditionalPlayerCount > 0)
+	{
+		GameLiftRequest.SetAdditionalPlayerCount(Var_Request.AdditionalPlayerCount);
+	}
 	GameLiftRequest.SetBackfillMode(static_cast<Aws::GameLift::Model::BackfillMode>(Var_Request.BackfillMode.GetValue()));
-	GameLiftRequest.SetCustomEventData(TCHAR_TO_UTF8(*Var_Request.CustomEventData));
-	GameLiftRequest.SetDescription(TCHAR_TO_UTF8(*Var_Request.Description));
+	if(!Var_Request.CustomEventData.IsEmpty())
+	{
+		GameLiftRequest.SetCustomEventData(TCHAR_TO_UTF8(*Var_Request.CustomEventData));
+	}
+	if(!Var_Request.Description.IsEmpty())
+	{
+		GameLiftRequest.SetDescription(TCHAR_TO_UTF8(*Var_Request.Description));
+	}
 	GameLiftRequest.SetFlexMatchMode(static_cast<Aws::GameLift::Model::FlexMatchMode>(Var_Request.FlexMatchMode.GetValue()));
-	Aws::Vector<Aws::GameLift::Model::GameProperty> GameProperties;
-	for(int32 i = 0; i < Var_Request.GameProperties.Num(); i++)
+	if(Var_Request.GameProperties.Num() > 0)
 	{
-		GameProperties.push_back(Var_Request.GameProperties[i].ToGameProperty());
+		Aws::Vector<Aws::GameLift::Model::GameProperty> GameProperties;
+		for(int32 i = 0; i < Var_Request.GameProperties.Num(); i++)
+		{
+			GameProperties.push_back(Var_Request.GameProperties[i].ToGameProperty());
+		}
+		GameLiftRequest.SetGameProperties(GameProperties);
 	}
-	GameLiftRequest.SetGameProperties(GameProperties);
-	Aws::Vector<Aws::String> GameSessionQueueArns;
-	for(int32 i = 0; i < Var_Request.GameSessionQueueArns.Num(); i++)
+	if(Var_Request.GameSessionQueueArns.Num() > 0)
 	{
-		GameSessionQueueArns.push_back(TCHAR_TO_UTF8(*Var_Request.GameSessionQueueArns[i]));
+		Aws::Vector<Aws::String> GameSessionQueueArns;
+		for(int32 i = 0; i < Var_Request.GameSessionQueueArns.Num(); i++)
+		{
+			GameSessionQueueArns.push_back(TCHAR_TO_UTF8(*Var_Request.GameSessionQueueArns[i]));
+		}
+		GameLiftRequest.SetGameSessionQueueArns(GameSessionQueueArns);
 	}
-	GameLiftRequest.SetGameSessionQueueArns(GameSessionQueueArns);
-	GameLiftRequest.SetGameSessionData(TCHAR_TO_UTF8(*Var_Request.GameSessionData));
-	GameLiftRequest.SetNotificationTarget(TCHAR_TO_UTF8(*Var_Request.NotificationTarget));
+	if(!Var_Request.GameSessionData.IsEmpty())
+	{
+		GameLiftRequest.SetGameSessionData(TCHAR_TO_UTF8(*Var_Request.GameSessionData));
+	}
+	if(!Var_Request.NotificationTarget.IsEmpty())
+	{
+		GameLiftRequest.SetNotificationTarget(TCHAR_TO_UTF8(*Var_Request.NotificationTarget));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::UpdateMatchmakingConfigurationRequest&, const Aws::GameLift::Model::UpdateMatchmakingConfigurationOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()

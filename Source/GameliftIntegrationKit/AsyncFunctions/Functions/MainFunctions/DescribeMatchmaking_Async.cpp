@@ -21,9 +21,12 @@ void UDescribeMatchmaking_Async::ExecuteFailure(FGameLiftError Error)
 void UDescribeMatchmaking_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::DescribeMatchmakingRequest GameLiftRequest;
-	for (FString TicketId : Var_TicketIds)
+	if(!Var_TicketIds.IsEmpty())
 	{
-		GameLiftRequest.AddTicketIds(TCHAR_TO_UTF8(*TicketId));
+		for (FString TicketId : Var_TicketIds)
+		{
+			GameLiftRequest.AddTicketIds(TCHAR_TO_UTF8(*TicketId));
+		}
 	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::DescribeMatchmakingRequest&, const Aws::GameLift::Model::DescribeMatchmakingOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{

@@ -27,18 +27,38 @@ void USearchGameSessions_Async::ExecuteFailure(FGameLiftError Error)
 
 void USearchGameSessions_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
+	UE_LOG(LogTemp, Error, TEXT("SearchGameSessions is not supported by GameLiftLocal"));
 	Aws::GameLift::Model::SearchGameSessionsRequest GameLiftRequest;
-	GameLiftRequest.SetAliasId(TCHAR_TO_UTF8(*Var_AliasId));
-	GameLiftRequest.SetFilterExpression(TCHAR_TO_UTF8(*Var_FilterExpression));
-	GameLiftRequest.SetSortExpression(TCHAR_TO_UTF8(*Var_SortExpression));
-	GameLiftRequest.SetFleetId(TCHAR_TO_UTF8(*Var_FleetId));
+	if(Var_AliasId.Len()>0)
+	{
+		GameLiftRequest.SetAliasId(TCHAR_TO_UTF8(*Var_AliasId));
+	}
+	if (Var_FilterExpression.Len() > 0)
+	{
+		GameLiftRequest.SetFilterExpression(TCHAR_TO_UTF8(*Var_FilterExpression));
+	}
+	if (Var_SortExpression.Len() > 0)
+	{
+		GameLiftRequest.SetSortExpression(TCHAR_TO_UTF8(*Var_SortExpression));
+	}
+	if (Var_FleetId.Len() > 0)
+	{
+		GameLiftRequest.SetFleetId(TCHAR_TO_UTF8(*Var_FleetId));
+	}
 	GameLiftRequest.SetLimit(Var_Limit);
-	GameLiftRequest.SetLocation(TCHAR_TO_UTF8(*Var_Location));
-	GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_NextToken));
+	if (Var_Location.Len() > 0)
+	{
+		GameLiftRequest.SetLocation(TCHAR_TO_UTF8(*Var_Location));
+	}
+	if (Var_NextToken.Len() > 0)
+	{
+		GameLiftRequest.SetNextToken(TCHAR_TO_UTF8(*Var_NextToken));
+	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::SearchGameSessionsRequest&, const Aws::GameLift::Model::SearchGameSessionsOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)
 	{
 		AsyncTask(ENamedThreads::GameThread, [outcome, this]()
 		{
+			UE_LOG(LogTemp, Error, TEXT("SearchGameSessions is not supported by GameLiftLocal 222"));
 			if(outcome.IsSuccess())
 			{
 				TArray<FGLGameSession> GameSessions;
@@ -60,5 +80,5 @@ void USearchGameSessions_Async::ContinueProcess(UGameliftObject* AWSObject)
 			}
 		});
 	};
-	
+	AWSObject->Var_GameLiftClient->SearchGameSessionsAsync(GameLiftRequest, AsyncCallback);
 }

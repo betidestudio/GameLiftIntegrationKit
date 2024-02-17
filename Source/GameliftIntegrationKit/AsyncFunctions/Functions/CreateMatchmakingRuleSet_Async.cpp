@@ -21,14 +21,23 @@ void UCreateMatchmakingRuleSet_Async::ExecuteFailure(FGameLiftError Error)
 void UCreateMatchmakingRuleSet_Async::ContinueProcess(UGameliftObject* AWSObject)
 {
 	Aws::GameLift::Model::CreateMatchmakingRuleSetRequest GameLiftRequest;
-	GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Request.Name));
-	GameLiftRequest.SetRuleSetBody(TCHAR_TO_UTF8(*Var_Request.RuleSetBody));
-	for(auto Property : Var_Request.Tags)
+	if(!Var_Request.Name.IsEmpty())
 	{
-		Aws::GameLift::Model::Tag Tag;
-		Tag.SetKey(TCHAR_TO_UTF8(*Property.Key));
-		Tag.SetValue(TCHAR_TO_UTF8(*Property.Value));
-		GameLiftRequest.AddTags(Tag);
+		GameLiftRequest.SetName(TCHAR_TO_UTF8(*Var_Request.Name));
+	}
+	if(!Var_Request.RuleSetBody.IsEmpty())
+	{
+		GameLiftRequest.SetRuleSetBody(TCHAR_TO_UTF8(*Var_Request.RuleSetBody));
+	}
+	if(Var_Request.Tags.Num() > 0)
+	{
+		for(auto Property : Var_Request.Tags)
+		{
+			Aws::GameLift::Model::Tag Tag;
+			Tag.SetKey(TCHAR_TO_UTF8(*Property.Key));
+			Tag.SetValue(TCHAR_TO_UTF8(*Property.Value));
+			GameLiftRequest.AddTags(Tag);
+		}
 	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient* Client, const Aws::GameLift::Model::CreateMatchmakingRuleSetRequest& Request, const Aws::GameLift::Model::CreateMatchmakingRuleSetOutcome& Outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext> Context)
 	{
