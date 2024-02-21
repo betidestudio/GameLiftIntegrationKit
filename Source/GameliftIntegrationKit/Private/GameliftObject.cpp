@@ -36,7 +36,6 @@ void UGameliftObject::InitGameLift(UObject* WorldContextObject, FGameLiftSetup S
 		}
 		else
 		{
-			//AwsObject = NewObject<UGameliftObject>();
 			UE_LOG(LogGameliftIK, Warning, TEXT("Gamelift Subsystem is not ready yet. Please try again later."));
 			OnGameliftSetupSuccess.ExecuteIfBound(false);
 			return;
