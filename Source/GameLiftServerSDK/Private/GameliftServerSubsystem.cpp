@@ -7,6 +7,7 @@
 #include "GenericPlatform/GenericPlatformProcess.h"
 #include "GameFramework/GameModeBase.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogGameliftServerIK, Log, All);
 
 void UGameliftServerSubsystem::SetupGameLiftServer(int32 ServerPort, FString LogFilePath, FExtraParametersForServerSetup ExtraSettings,bool& bIsSuccess, FString& ErrorMessage)
 {
@@ -14,19 +15,19 @@ void UGameliftServerSubsystem::SetupGameLiftServer(int32 ServerPort, FString Log
 	FGameLiftServerSDKModule* gameLiftSdkModule = &FModuleManager::LoadModuleChecked<FGameLiftServerSDKModule>(FName("GameLiftServerSDK"));
 	//Define the server parameters for a GameLift Anywhere fleet. These are not needed for a GameLift managed EC2 fleet.
     FServerParameters serverParameters;
-    UE_LOG(LogTemp, Log, TEXT("Initializing the GameLift Server"));
+    UE_LOG(LogGameliftServerIK, Log, TEXT("Initializing the GameLift Server"));
     //AuthToken returned from the "aws gamelift get-compute-auth-token" API. Note this will expire and require a new call to the API after 15 minutes.
     if(ExtraSettings.AuthToken.IsEmpty())
     {
         if (FParse::Value(FCommandLine::Get(), TEXT("-authtoken="), serverParameters.m_authToken))
         {
-            UE_LOG(LogTemp, Log, TEXT("AUTH_TOKEN: %s"), *serverParameters.m_authToken)
+            UE_LOG(LogGameliftServerIK, Log, TEXT("AUTH_TOKEN: %s"), *serverParameters.m_authToken)
         }
     }
     else
     {
         serverParameters.m_authToken = ExtraSettings.AuthToken;
-        UE_LOG(LogTemp, Log, TEXT("AUTH_TOKEN: %s"), *serverParameters.m_authToken)
+        UE_LOG(LogGameliftServerIK, Log, TEXT("AUTH_TOKEN: %s"), *serverParameters.m_authToken)
     }
 
     if(ExtraSettings.HostId.IsEmpty())
@@ -34,13 +35,13 @@ void UGameliftServerSubsystem::SetupGameLiftServer(int32 ServerPort, FString Log
         //The Host/compute-name of the GameLift Anywhere instance.
         if (FParse::Value(FCommandLine::Get(), TEXT("-hostid="), serverParameters.m_hostId))
         {
-            UE_LOG(LogTemp, Log, TEXT("HOST_ID: %s"), *serverParameters.m_hostId)
+            UE_LOG(LogGameliftServerIK, Log, TEXT("HOST_ID: %s"), *serverParameters.m_hostId)
         }
     }
     else
     {
         serverParameters.m_hostId = ExtraSettings.HostId;
-        UE_LOG(LogTemp, Log, TEXT("HOST_ID: %s"), *serverParameters.m_hostId)
+        UE_LOG(LogGameliftServerIK, Log, TEXT("HOST_ID: %s"), *serverParameters.m_hostId)
     }
 
     if(ExtraSettings.FleetId.IsEmpty())
@@ -48,13 +49,13 @@ void UGameliftServerSubsystem::SetupGameLiftServer(int32 ServerPort, FString Log
         //The Anywhere Fleet ID.
         if (FParse::Value(FCommandLine::Get(), TEXT("-fleetid="), serverParameters.m_fleetId))
         {
-            UE_LOG(LogTemp, Log, TEXT("FLEET_ID: %s"), *serverParameters.m_fleetId)
+            UE_LOG(LogGameliftServerIK, Log, TEXT("FLEET_ID: %s"), *serverParameters.m_fleetId)
         }
     }
     else
     {
         serverParameters.m_fleetId = ExtraSettings.FleetId;
-        UE_LOG(LogTemp, Log, TEXT("FLEET_ID: %s"), *serverParameters.m_fleetId)
+        UE_LOG(LogGameliftServerIK, Log, TEXT("FLEET_ID: %s"), *serverParameters.m_fleetId)
     }
 
     if(ExtraSettings.WebSocketUrl.IsEmpty())
@@ -62,18 +63,18 @@ void UGameliftServerSubsystem::SetupGameLiftServer(int32 ServerPort, FString Log
         //The WebSocket URL (GameLiftServiceSdkEndpoint).
         if (FParse::Value(FCommandLine::Get(), TEXT("-websocketurl="), serverParameters.m_webSocketUrl))
         {
-            UE_LOG(LogTemp, Log, TEXT("WEBSOCKET_URL: %s"), *serverParameters.m_webSocketUrl)
+            UE_LOG(LogGameliftServerIK, Log, TEXT("WEBSOCKET_URL: %s"), *serverParameters.m_webSocketUrl)
         }
     }
     else
     {
         serverParameters.m_webSocketUrl = ExtraSettings.WebSocketUrl;
-        UE_LOG(LogTemp, Log, TEXT("WEBSOCKET_URL: %s"), *serverParameters.m_webSocketUrl)
+        UE_LOG(LogGameliftServerIK, Log, TEXT("WEBSOCKET_URL: %s"), *serverParameters.m_webSocketUrl)
     }
 
     //The PID of the running process
     serverParameters.m_processId = FString::Printf(TEXT("%d"), FGenericPlatformProcess::GetCurrentProcessId());
-    UE_LOG(LogTemp, Log, TEXT("PID: %s"), *serverParameters.m_processId);
+    UE_LOG(LogGameliftServerIK, Log, TEXT("PID: %s"), *serverParameters.m_processId);
 
     //InitSDK establishes a local connection with GameLift's agent to enable further communication.
     //Use InitSDK(serverParameters) for a GameLift Anywhere fleet. 
@@ -81,11 +82,11 @@ void UGameliftServerSubsystem::SetupGameLiftServer(int32 ServerPort, FString Log
     auto GameLiftResult =  gameLiftSdkModule->InitSDK(serverParameters);
 if (GameLiftResult.IsSuccess())
 {
-    UE_LOG(LogTemp, Log, TEXT("GameLift SDK is initialized"));
+    UE_LOG(LogGameliftServerIK, Log, TEXT("GameLift SDK is initialized"));
 }
 else
 {
-    UE_LOG(LogTemp, Log, TEXT("GameLift SDK failed to initialize"));
+    UE_LOG(LogGameliftServerIK, Log, TEXT("GameLift SDK failed to initialize"));
     ErrorMessage = GameLiftResult.GetError().m_errorMessage;
     bIsSuccess = false;
     return;
@@ -99,7 +100,7 @@ else
     auto onGameSession = [=](Aws::GameLift::Server::Model::GameSession gameSession)
     {
         FString gameSessionId = FString(gameSession.GetGameSessionId());
-        UE_LOG(LogTemp, Log, TEXT("GameSession Initializing: %s"), *gameSessionId);
+        UE_LOG(LogGameliftServerIK, Log, TEXT("GameSession Initializing: %s"), *gameSessionId);
         gameLiftSdkModule->ActivateGameSession();
         FOnGameliftServerProcessReady().Broadcast();
     };
@@ -113,7 +114,7 @@ else
     //server SDK call ProcessEnding() to tell GameLift it is shutting down.
     auto onProcessTerminate = [=]() 
     {
-        UE_LOG(LogTemp, Log, TEXT("Game Server Process is terminating"));
+        UE_LOG(LogGameliftServerIK, Log, TEXT("Game Server Process is terminating"));
         FOnGameliftServerProcessTerminate().Broadcast();
         gameLiftSdkModule->ProcessEnding();
     };
@@ -128,7 +129,7 @@ else
     //In this example, the game server always reports healthy.
     auto onHealthCheck = []() 
     {
-        UE_LOG(LogTemp, Log, TEXT("Performing Health Check"));
+        UE_LOG(LogGameliftServerIK, Log, TEXT("Performing Health Check"));
         FOnGameliftServerHealthCheck().Broadcast();
         return true;
     };
@@ -147,7 +148,7 @@ else
     m_params.logParameters = logfiles;
 
     //The game server calls ProcessReady() to tell GameLift it's ready to host game sessions.
-    UE_LOG(LogTemp, Log, TEXT("Calling Process Ready"));
+    UE_LOG(LogGameliftServerIK, Log, TEXT("Calling Process Ready"));
     gameLiftSdkModule->ProcessReady(m_params);
     bIsSuccess = true;
     ErrorMessage = "";
@@ -289,6 +290,69 @@ bool UGameliftServerSubsystem::RemovePlayerSession(const FString& playerSessionI
 #if WITH_GAMELIFT
     FGameLiftServerSDKModule* gameLiftSdkModule = &FModuleManager::LoadModuleChecked<FGameLiftServerSDKModule>(FName("GameLiftServerSDK"));
     if(gameLiftSdkModule->RemovePlayerSession(TCHAR_TO_ANSI(*playerSessionId)).IsSuccess())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+#endif
+    return false;
+}
+
+bool UGameliftServerSubsystem::StartBackfillMatch(const FString& ticketId, const FString& gameSessionArn,
+    const FString& matchmakingConfigurationArn, const TArray<FString>& players)
+{
+#if WITH_GAMELIFT
+    FGameLiftServerSDKModule* gameLiftSdkModule = &FModuleManager::LoadModuleChecked<FGameLiftServerSDKModule>(FName("GameLiftServerSDK"));
+    TArray<FPlayer> playersArray;
+    for (int i = 0; i < players.Num(); i++)
+    {
+        FPlayer player;
+        player.m_playerId = TCHAR_TO_ANSI(*players[i]);
+        playersArray.Add(player);
+    }
+    if(gameLiftSdkModule->StartMatchBackfill(ticketId, gameSessionArn, matchmakingConfigurationArn, playersArray).IsSuccess())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+#endif
+    return false;
+}
+
+bool UGameliftServerSubsystem::StopBackfillMatch(const FString& ticketId, const FString& gameSessionArn,
+    const FString& matchmakingConfigurationArn)
+{
+#if WITH_GAMELIFT
+    FGameLiftServerSDKModule* gameLiftSdkModule = &FModuleManager::LoadModuleChecked<FGameLiftServerSDKModule>(FName("GameLiftServerSDK"));
+    if(gameLiftSdkModule->StopMatchBackfill(ticketId, gameSessionArn, matchmakingConfigurationArn).IsSuccess())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+#endif
+    return false;
+}
+
+bool UGameliftServerSubsystem::DescribePlayerSessions(const FString& gameSessionId, const FString& playerId,
+    const FString& playerSessionId, const FString& playerSessionStatus)
+{
+#if WITH_GAMELIFT
+    FGameLiftServerSDKModule* gameLiftSdkModule = &FModuleManager::LoadModuleChecked<FGameLiftServerSDKModule>(FName("GameLiftServerSDK"));
+    FGameLiftDescribePlayerSessionsRequest request;
+    request.m_gameSessionId = TCHAR_TO_ANSI(*gameSessionId);
+    request.m_playerId = TCHAR_TO_ANSI(*playerId);
+    request.m_playerSessionId = TCHAR_TO_ANSI(*playerSessionId);
+    request.m_playerSessionStatusFilter = TCHAR_TO_ANSI(*playerSessionStatus);
+    if(gameLiftSdkModule->DescribePlayerSessions(request).IsSuccess())
     {
         return true;
     }

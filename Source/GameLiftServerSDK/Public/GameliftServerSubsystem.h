@@ -79,6 +79,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit|GameLift|Server")
 	static bool RemovePlayerSession(const FString& playerSessionId);
 
+	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit|GameLift|Server")
+	static bool StartBackfillMatch(const FString& ticketId, const FString& gameSessionArn, const FString& matchmakingConfigurationArn, const TArray<FString>& players);
+
+	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit|GameLift|Server")
+	static bool StopBackfillMatch(const FString& ticketId, const FString& gameSessionArn, const FString& matchmakingConfigurationArn);
+
+	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit|GameLift|Server")
+	static bool DescribePlayerSessions(const FString& gameSessionId, const FString& playerId, const FString& playerSessionId, const FString& playerSessionStatus);
 private:
 	
 #if WITH_GAMELIFT

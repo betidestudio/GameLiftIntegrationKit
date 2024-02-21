@@ -3,6 +3,11 @@
 
 #include "GameliftObject.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogGameliftIK, Log, All);
+DEFINE_LOG_CATEGORY(LogGameliftIK);
+
+
+
 #include "Async.h"
 #include "UObjectIterator.h"
 #include "aws/core/Aws.h"
@@ -31,7 +36,10 @@ void UGameliftObject::InitGameLift(UObject* WorldContextObject, FGameLiftSetup S
 		}
 		else
 		{
-			AwsObject = NewObject<UGameliftObject>();
+			//AwsObject = NewObject<UGameliftObject>();
+			UE_LOG(LogGameliftIK, Warning, TEXT("Gamelift Subsystem is not ready yet. Please try again later."));
+			OnGameliftSetupSuccess.ExecuteIfBound(false);
+			return;
 		}
 		AwsObject->GameLiftSetup = Settings;
 		if(AwsObject)
@@ -113,7 +121,8 @@ void UGameliftObject::SetupServer(UObject* WorldContextObject)
 	}
 	AwsObject->InitSDK();
 #else
-	UE_LOG(LogTemp, Warning, TEXT("WITH_GAMELIFT is not defined"));
+	UE_LOG(LogGameliftIK, Warning, TEXT("WITH_GAMELIFT is set to false"));
 #endif
+	UE_LOG(LogGameliftIK, Warning, TEXT("WITH_GAMELIFT is not defined which means you are not using GameLift SDK or something went wrong."));
 #endif
 }
