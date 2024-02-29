@@ -8,6 +8,7 @@
 #include "UObject/UObjectIterator.h"
 #include "GameliftSharedClass.h"
 #include "Kismet/BlueprintAsyncActionBase.h"
+#include "Windows/WindowsPlatformProcess.h"
 #include "GameliftBaseFunction.generated.h"
 
 /**

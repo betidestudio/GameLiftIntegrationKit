@@ -13,6 +13,8 @@
 */
 #pragma once
 
+#include "Misc/DateTime.h"
+
 enum class GAMELIFTSERVERSDK_API EPlayerSessionCreationPolicy
 {
     NOT_SET,

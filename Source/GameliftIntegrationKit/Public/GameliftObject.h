@@ -5,6 +5,10 @@
 #include "CoreMinimal.h"
 #include "aws/core/client/ClientConfiguration.h"
 #include "aws/gamelift/GameLiftClient.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#if PLATFORM_WINDOWS
+#include "Windows/WindowsPlatformProcess.h"
+#endif
 #include "GameliftObject.generated.h"
 
 UENUM(BlueprintType)

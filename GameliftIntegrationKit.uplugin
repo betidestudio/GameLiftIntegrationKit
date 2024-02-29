@@ -8,7 +8,7 @@
 	"CreatedBy": "Betide Studio",
 	"EngineVersion": "5.1",
 	"CreatedByURL": "https://betide.studio",
-	"DocsURL": "https://aws.betide.studio/gamelift/",
+	"DocsURL": "https://aws.betide.studio/gamelift/setup/",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/56d124c89ae04363bd08b67ccb7fea31",
 	"SupportURL": "https://discord.gg/j6y5ExMd8Q",
 	"CanContainContent": true,
@@ -26,7 +26,7 @@
 			"Name": "GameLiftServerSDK",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
-			"WhitelistPlatforms": ["Win64", "Linux"],
+			"WhitelistPlatforms": ["Win64"],
 			"BlacklistTargets": ["Client"]
 		}
 	]
