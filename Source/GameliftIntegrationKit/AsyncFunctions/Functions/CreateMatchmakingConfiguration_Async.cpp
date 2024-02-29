@@ -3,7 +3,7 @@
 
 #include "CreateMatchmakingConfiguration_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/CreateMatchmakingConfigurationRequest.h"
 
 UCreateMatchmakingConfiguration_Async* UCreateMatchmakingConfiguration_Async::CreateMatchmakingConfiguration(

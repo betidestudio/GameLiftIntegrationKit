@@ -3,7 +3,7 @@
 
 #include "UpdateGameSession_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/UpdateGameSessionRequest.h"
 
 UUpdateGameSession_Async* UUpdateGameSession_Async::UpdateGameSession(const TArray<FGameProperty>& GameProperties,

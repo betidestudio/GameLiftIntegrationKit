@@ -3,7 +3,7 @@
 
 #include "DescribeGameSessionPlacement_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/DescribeGameSessionPlacementRequest.h"
 
 UDescribeGameSessionPlacement_Async* UDescribeGameSessionPlacement_Async::DescribeGameSessionPlacement(

@@ -3,7 +3,7 @@
 
 #include "StopMatchmaking_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/StopMatchmakingRequest.h"
 
 UStopMatchmaking_Async* UStopMatchmaking_Async::StopMatchmaking(FString TicketId)

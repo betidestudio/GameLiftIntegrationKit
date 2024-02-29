@@ -3,7 +3,7 @@
 
 #include "DescribeGameSessions_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/DescribeGameSessionsRequest.h"
 
 UDescribeGameSessions_Async* UDescribeGameSessions_Async::DescribeGameSessions(FString AliasId, FString FleetId,

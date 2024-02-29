@@ -3,7 +3,7 @@
 
 #include "StopGameSessionPlacement_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/StopGameSessionPlacementRequest.h"
 
 UStopGameSessionPlacement_Async* UStopGameSessionPlacement_Async::StopGameSessionPlacement(FString PlacementId)

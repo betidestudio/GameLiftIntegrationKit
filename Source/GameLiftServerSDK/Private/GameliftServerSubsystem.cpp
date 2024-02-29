@@ -2,7 +2,9 @@
 
 
 #include "GameliftServerSubsystem.h"
-
+#include "GameFramework/Actor.h"
+#include "Misc/Paths.h"
+#include "Engine/World.h"
 #include "GameLiftServerSDK.h"
 #include "GenericPlatform/GenericPlatformProcess.h"
 #include "GameFramework/GameModeBase.h"

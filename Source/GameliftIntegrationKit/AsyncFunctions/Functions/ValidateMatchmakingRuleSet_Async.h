@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AsyncFunctions/GameliftBaseFunction.h"
+#include "GameliftIntegrationKit/AsyncFunctions/GameliftBaseFunction.h"
 #include "ValidateMatchmakingRuleSet_Async.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnValidateMatchmakingRuleSetAsync, bool, Valid, FGameLiftError, Error);

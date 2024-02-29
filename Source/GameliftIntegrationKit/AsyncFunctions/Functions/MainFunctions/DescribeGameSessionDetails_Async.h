@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AsyncFunctions/GameliftBaseFunction.h"
+#include "GameliftIntegrationKit/AsyncFunctions/GameliftBaseFunction.h"
 #include "DescribeGameSessionDetails_Async.generated.h"
 
 /**

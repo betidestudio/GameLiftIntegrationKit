@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Object.h"
 #include "aws/core/client/ClientConfiguration.h"
 #include "aws/gamelift/GameLiftClient.h"
 #include "GameliftObject.generated.h"

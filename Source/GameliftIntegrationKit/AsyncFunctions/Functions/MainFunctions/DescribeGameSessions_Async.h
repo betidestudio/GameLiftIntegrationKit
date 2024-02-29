@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AsyncFunctions/GameliftBaseFunction.h"
+#include "GameliftIntegrationKit/AsyncFunctions/GameliftBaseFunction.h"
 #include "DescribeGameSessions_Async.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDescribeGameSessionsOutput, const TArray<FGLGameSession>&, GameSessions, const FString&, NextToken, FGameLiftError, Error); 

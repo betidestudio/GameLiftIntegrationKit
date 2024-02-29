@@ -8,8 +8,8 @@ DEFINE_LOG_CATEGORY(LogGameliftIK);
 
 
 
-#include "Async.h"
-#include "UObjectIterator.h"
+#include "Async/Async.h"
+#include "UObject/UObjectIterator.h"
 #include "aws/core/Aws.h"
 #include "aws/core/auth/AWSCredentials.h"
 #ifdef WITH_GAMELIFT

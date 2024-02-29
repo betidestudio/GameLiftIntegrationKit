@@ -3,7 +3,7 @@
 
 #include "CreateGameSession_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/CreateGameSessionRequest.h"
 
 UCreateGameSession_Async* UCreateGameSession_Async::CreateGameSession(FString AliasId, FString CreatorId,

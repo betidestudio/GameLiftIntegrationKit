@@ -12,8 +12,8 @@
 *
 */
 #include "GameLiftServerSDK.h"
-#include "Core.h"
 #include "Modules/ModuleManager.h"
+#include "Misc/Paths.h"
 #include "Interfaces/IPluginManager.h"
 
 #define LOCTEXT_NAMESPACE "FGameLiftServerSDKModule"

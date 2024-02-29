@@ -3,7 +3,7 @@
 
 #include "StartGameSessionPlacement_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/StartGameSessionPlacementRequest.h"
 
 UStartGameSessionPlacement_Async* UStartGameSessionPlacement_Async::StartGameSessionPlacement(

@@ -2,14 +2,14 @@
 
 #include "GameliftIntegrationKit.h"
 
-#include "FileManager.h"
-#include "IPluginManager.h"
-#include "Paths.h"
+#include "HAL/FileManager.h"
+#include "Interfaces/IPluginManager.h"
+#include "Misc/Paths.h"
 #include "ThirdParty/AWSSDK/Include/aws/core/Aws.h"
 #include "ThirdParty/AWSSDK/Include/aws/core/utils/logging/LogLevel.h"
 
 #if PLATFORM_WINDOWS
-#include "WindowsPlatformProcess.h"
+#include "Windows/WindowsPlatformProcess.h"
 #endif
 
 #define LOCTEXT_NAMESPACE "FGameliftIntegrationKitModule"

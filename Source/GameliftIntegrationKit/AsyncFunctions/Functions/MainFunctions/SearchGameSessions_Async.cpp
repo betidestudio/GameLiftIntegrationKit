@@ -3,7 +3,7 @@
 
 #include "SearchGameSessions_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/SearchGameSessionsRequest.h"
 
 USearchGameSessions_Async* USearchGameSessions_Async::SearchGameSessions(FString AliasId, FString FilterExpression,

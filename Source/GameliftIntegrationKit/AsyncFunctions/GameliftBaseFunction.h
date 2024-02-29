@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameliftObject.h"
 #include "GameliftSharedClass.h"
-#include "UObjectIterator.h"
+#include "UObject/UObjectIterator.h"
 #include "GameliftSharedClass.h"
 #include "Kismet/BlueprintAsyncActionBase.h"
 #include "GameliftBaseFunction.generated.h"
@@ -17,53 +17,43 @@
 UENUM(BlueprintType)
 enum EGameLiftErrors
 {
-	//From Core//
-	//////////////////////////////////////////////////////////////////////////////////////////
-	INCOMPLETE_SIGNATURE = 0,
-	INTERNAL_FAILURE = 1,
-	INVALID_ACTION = 2,
-	INVALID_CLIENT_TOKEN_ID = 3,
-	INVALID_PARAMETER_COMBINATION = 4,
-	INVALID_QUERY_PARAMETER = 5,
-	INVALID_PARAMETER_VALUE = 6,
-	MISSING_ACTION = 7, // SDK should never allow
-	MISSING_AUTHENTICATION_TOKEN = 8, // SDK should never allow
-	MISSING_PARAMETER = 9, // SDK should never allow
-	OPT_IN_REQUIRED = 10,
-	REQUEST_EXPIRED = 11,
-	SERVICE_UNAVAILABLE = 12,
-	THROTTLING = 13,
-	VALIDATION = 14,
-	ACCESS_DENIED = 15,
-	RESOURCE_NOT_FOUND = 16,
-	UNRECOGNIZED_CLIENT = 17,
-	MALFORMED_QUERY_STRING = 18,
-	SLOW_DOWN = 19,
-	REQUEST_TIME_TOO_SKEWED = 20,
-	INVALID_SIGNATURE = 21,
-	SIGNATURE_DOES_NOT_MATCH = 22,
-	INVALID_ACCESS_KEY_ID = 23,
-	REQUEST_TIMEOUT = 24,
-	NETWORK_CONNECTION = 99,
-
-	UNKNOWN = 100,
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-	CONFLICT= static_cast<int>(Aws::Client::CoreErrors::SERVICE_EXTENSION_START_RANGE) + 1,
-	FLEET_CAPACITY_EXCEEDED,
-	GAME_SESSION_FULL,
-	IDEMPOTENT_PARAMETER_MISMATCH,
-	INTERNAL_SERVICE,
-	INVALID_FLEET_STATUS,
-	INVALID_GAME_SESSION_STATUS,
-	INVALID_REQUEST,
-	LIMIT_EXCEEDED,
-	NOT_FOUND,
-	OUT_OF_CAPACITY,
-	TAGGING_FAILED,
-	TERMINAL_ROUTING_STRATEGY,
-	UNAUTHORIZED,
-	UNSUPPORTED_REGION
+	ALREADY_INITIALIZED,             // The GameLift Server or Client has already been initialized with
+                                     // Initialize().
+    FLEET_MISMATCH,                  // The target fleet does not match the fleet of a gameSession or playerSession.
+    GAMELIFT_CLIENT_NOT_INITIALIZED, // The GameLift client has not been initialized.
+    GAMELIFT_SERVER_NOT_INITIALIZED, // The GameLift server has not been initialized.
+    GAME_SESSION_ENDED_FAILED,       // The GameLift Server SDK could not contact the service to report
+                                     // the game session ended.
+    GAME_SESSION_NOT_READY,          // The GameLift Server Game Session was not activated.
+    GAME_SESSION_READY_FAILED,       // The GameLift Server SDK could not contact the service to report
+                                     // the game session is ready.
+    GAME_SESSION_ID_NOT_SET,         // No game sessions are bound to this process.
+    INITIALIZATION_MISMATCH,         // A client method was called after Server::Initialize(), or vice
+                                     // versa.
+    NOT_INITIALIZED,                 // The GameLift Server or Client has not been initialized with Initialize().
+    NO_TARGET_ALIASID_SET,           // A target aliasId has not been set.
+    NO_TARGET_FLEET_SET,             // A target fleet has not been set.
+    PROCESS_ENDING_FAILED,           // The GameLift Server SDK could not contact the service to report the
+                                     // process is ending.
+    PROCESS_NOT_ACTIVE,              // The server process is not yet active, not bound to a GameSession, and
+                                     // cannot accept or process PlayerSessions.
+    PROCESS_NOT_READY,               // The server process is not yet ready to be activated.
+    PROCESS_READY_FAILED,            // The GameLift Server SDK could not contact the service to report the
+                                     // process is ready.
+    SDK_VERSION_DETECTION_FAILED,    // SDK version detection failed.
+    SERVICE_CALL_FAILED,             // A call to an AWS service has failed.
+    STX_CALL_FAILED,                 // A call to the XStx server backend component has failed.
+    STX_INITIALIZATION_FAILED,       // The XStx server backend component has failed to initialize.
+    UNEXPECTED_PLAYER_SESSION,       // An unregistered player session was encountered by the server.
+    BAD_REQUEST_EXCEPTION,
+    INTERNAL_SERVICE_EXCEPTION,
+    WEBSOCKET_CONNECT_FAILURE,                // Failure to connect to the GameLift Service WebSocket
+    WEBSOCKET_CONNECT_FAILURE_FORBIDDEN,      // Access denied, e.g. auth token has expired
+    WEBSOCKET_CONNECT_FAILURE_INVALID_URL,    // End point URL is invalid
+    WEBSOCKET_CONNECT_FAILURE_TIMEOUT,        // Timeout
+    WEBSOCKET_RETRIABLE_SEND_MESSAGE_FAILURE, // Retriable failure to send message to the GameLift
+                                              // Service WebSocket
+    WEBSOCKET_SEND_MESSAGE_FAILURE            // Failure to send message to the GameLift Service WebSocket
 };
 
 USTRUCT(BlueprintType)
@@ -71,19 +61,19 @@ struct FGameLiftError
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
 	FString ErrorMessage;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
 	FString GetMessageA;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
 	FString GetMessageW;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
 	FString ExceptionName;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
 	TEnumAsByte<EGameLiftErrors> ErrorType;
 };
 UCLASS()

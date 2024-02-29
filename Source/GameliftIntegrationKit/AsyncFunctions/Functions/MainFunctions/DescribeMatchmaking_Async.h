@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AsyncFunctions/GameliftBaseFunction.h"
+#include "GameliftIntegrationKit/AsyncFunctions/GameliftBaseFunction.h"
 #include "DescribeMatchmaking_Async.generated.h"
 
 

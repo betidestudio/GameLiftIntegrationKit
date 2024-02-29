@@ -3,7 +3,7 @@
 
 #include "DescribePlayerSessions_Async.h"
 
-#include "Async.h"
+#include "Async/Async.h"
 #include "aws/gamelift/model/DescribePlayerSessionsRequest.h"
 
 UDescribePlayerSessions_Async* UDescribePlayerSessions_Async::DescribePlayerSessions(const FString& GameSessionId,
