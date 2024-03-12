@@ -8,7 +8,7 @@
 #include "UObject/UObjectIterator.h"
 #include "GameliftSharedClass.h"
 #include "Kismet/BlueprintAsyncActionBase.h"
-#include "Windows/WindowsPlatformProcess.h"
+#include "GenericPlatformProcess.h"
 #include "GameliftBaseFunction.generated.h"
 
 /**
@@ -77,6 +77,8 @@ struct FGameLiftError
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
 	TEnumAsByte<EGameLiftErrors> ErrorType;
 };
+
+
 UCLASS()
 class GAMELIFTINTEGRATIONKIT_API UGameliftBaseFunction : public UBlueprintAsyncActionBase
 {

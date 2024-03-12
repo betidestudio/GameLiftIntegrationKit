@@ -1,9 +1,8 @@
-﻿//Copyright (c) 2024 Betide Studio. All Rights Reserved.
+﻿
+//Copyright (c) 2024 Betide Studio. All Rights Reserved.
 
 
 #include "GameliftBaseFunction.h"
-
-
 
 void UGameliftBaseFunction::Activate()
 {
