@@ -36,7 +36,7 @@ public class AWSSDK : ModuleRules
         PublicDefinitions.Add("USE_IMPORT_EXPORT");
         PublicDefinitions.Add("AWS_CRT_CPP_USE_IMPORT_EXPORT");
         PublicDefinitions.Add("AWS_USE_IO_COMPLETION_PORTS");
-
+        PublicDefinitions.Add("AWS_DEEP_CHECKS=1");
 
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
