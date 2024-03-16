@@ -63,19 +63,19 @@ struct FGameLiftError
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
-	FString ErrorMessage;
+	FString ErrorMessage = "GameLiftError";
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
-	FString GetMessageA;
+	FString GetMessageA = "GameLiftError";
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
-	FString GetMessageW;
+	FString GetMessageW = "GameLiftError";
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
-	FString ExceptionName;
+	FString ExceptionName = "GameLiftError";
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GameLift Integration Kit")
-	TEnumAsByte<EGameLiftErrors> ErrorType;
+	TEnumAsByte<EGameLiftErrors> ErrorType = EGameLiftErrors::UNEXPECTED_PLAYER_SESSION;
 };
 
 

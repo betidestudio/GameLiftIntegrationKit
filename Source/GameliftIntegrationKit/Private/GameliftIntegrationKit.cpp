@@ -20,7 +20,7 @@ void FGameliftIntegrationKitModule::StartupModule()
 	if(const TSharedPtr<IPlugin> PluginPtr = IPluginManager::Get().FindPlugin("GameliftIntegrationKit"))
 	{
 		const FString PluginDir = PluginPtr->GetBaseDir();
-		const FString BinDir =  FPaths::ConvertRelativePathToFull(FPaths::Combine(PluginDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("AWSSDK"), TEXT("Binaries"), TEXT("Win64")));
+		const FString BinDir =  FPaths::ConvertRelativePathToFull(FPaths::Combine(PluginDir, TEXT("Source"), TEXT("ThirdParty"), TEXT("AWSSDK"), TEXT("Win64")));
 		FPlatformProcess::PushDllDirectory(*BinDir);
 		TArray<FString> LibFiles;
 		IFileManager::Get().FindFiles(LibFiles, *(BinDir / TEXT("*.dll")), true, false);
