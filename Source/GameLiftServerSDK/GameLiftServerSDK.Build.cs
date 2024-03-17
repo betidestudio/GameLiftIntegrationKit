@@ -12,6 +12,7 @@
 *
 */
 
+using System;
 using UnrealBuildTool;
 
 public class GameLiftServerSDK : ModuleRules
@@ -37,7 +38,9 @@ public class GameLiftServerSDK : ModuleRules
         string SDKDirectory = System.IO.Path.Combine(BaseDirectory, "ThirdParty", "GameLiftServerSDK", Target.Platform.ToString());
 
         bool bHasGameLiftSDK = System.IO.Directory.Exists(SDKDirectory);
-
+        System.Console.WriteLine("GameLiftServerSDK: " + SDKDirectory);
+        System.Console.WriteLine("GameLiftServerSDK: " + bHasGameLiftSDK);
+        System.Console.WriteLine("GameLiftServerSDK: " + Target.Platform);
         if (bHasGameLiftSDK)
         {
             if (Target.Type == TargetRules.TargetType.Server)

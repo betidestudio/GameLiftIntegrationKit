@@ -19,14 +19,14 @@
 			"Name": "GameliftIntegrationKit",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": ["Win64"],
+			"WhitelistPlatforms": ["Win64", "Win32", "Linux", "Mac", "IOS", "Android"],
 			"BlacklistTargets": ["Server"]
 		},
 		{
 			"Name": "GameLiftServerSDK",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
-			"WhitelistPlatforms": ["Win64"],
+			"WhitelistPlatforms": ["Win64","LinuxArm64","Linux"],
 			"BlacklistTargets": ["Client"]
 		}
 	]
