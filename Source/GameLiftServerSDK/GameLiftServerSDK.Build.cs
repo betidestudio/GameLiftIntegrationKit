@@ -58,6 +58,12 @@ public class GameLiftServerSDK : ModuleRules
                     string SDKLibWindows = System.IO.Path.Combine(SDKDirectory, "aws-cpp-sdk-gamelift-server.dll");
                     RuntimeDependencies.Add(SDKLibWindows);
                 }
+                else if (Target.Platform == UnrealTargetPlatform.LinuxArm64)
+                {
+                    string SDKLib = System.IO.Path.Combine(SDKDirectory, "libaws-cpp-sdk-gamelift-server.a");
+                    PublicAdditionalLibraries.Add(SDKLib);
+                    RuntimeDependencies.Add(SDKLib);
+                }
             }
             else
             {
