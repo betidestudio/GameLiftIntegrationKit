@@ -25,7 +25,7 @@ void UDescribeMatchmaking_Async::ContinueProcess(UGameliftObject* AWSObject)
 	{
 		for (FString TicketId : Var_TicketIds)
 		{
-			GameLiftRequest.AddTicketIds(TCHAR_TO_UTF8(*TicketId));
+			GameLiftRequest.AddTicketIds(TCHAR_TO_ANSI(*TicketId));
 		}
 	}
 	auto AsyncCallback = [this](const Aws::GameLift::GameLiftClient*, const Aws::GameLift::Model::DescribeMatchmakingRequest&, const Aws::GameLift::Model::DescribeMatchmakingOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>)

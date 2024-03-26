@@ -12,7 +12,7 @@
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/56d124c89ae04363bd08b67ccb7fea31",
 	"SupportURL": "https://discord.gg/j6y5ExMd8Q",
 	"CanContainContent": true,
-	"IsBetaVersion": false,
+	"IsBetaVersion": true,
 	"Installed": false,
 	"Modules": [
 		{

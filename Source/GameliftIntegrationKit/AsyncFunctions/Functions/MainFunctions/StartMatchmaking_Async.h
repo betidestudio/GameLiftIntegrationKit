@@ -41,7 +41,10 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FStartMatchmakingAsyncOutputPin Failure;
 
+	virtual void Activate() override;
+
 	virtual void ExecuteFailure(FGameLiftError Error) override;
+	void StartMatchmaking_Async();
 	virtual void ContinueProcess(UGameliftObject* AWSObject) override;
 	
 };

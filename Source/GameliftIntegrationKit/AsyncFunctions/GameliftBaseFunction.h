@@ -91,4 +91,10 @@ public:
 	virtual void ContinueProcess(UGameliftObject* AWSObject);
 
 	virtual void ExecuteFailure(FGameLiftError Error);
+	
+	virtual void SetReadyToDestroy() override
+	{
+		Super::SetReadyToDestroy();
+		RemoveFromRoot();
+	}
 };

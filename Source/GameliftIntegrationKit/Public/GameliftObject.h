@@ -218,8 +218,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit", meta=(WorldContext="WorldContextObject"))
 	static void InitGameLift(UObject* WorldContextObject, FGameLiftSetup Settings, FOnGameliftSetupSuccess OnGameliftSetupSuccess);
 
+	
 	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit", meta=(WorldContext="WorldContextObject"))
 	static bool ShutdownGameLift(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit", meta=(WorldContext="WorldContextObject"))
+	static FString RandomUUID(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, Category = "AWS Integration Kit", meta=(WorldContext="WorldContextObject"))
 	static void SetupServer(UObject* WorldContextObject);

@@ -7,7 +7,7 @@
 #include "DescribeMatchmaking_Async.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDescribeMatchmakingAsyncOutputPin, TArray<FMatchmakingTicket>, Result, FGameLiftError, Error);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDescribeMatchmakingAsyncOutputPin, const TArray<FMatchmakingTicket>&, Result, FGameLiftError, Error);
 
 UCLASS()
 class GAMELIFTINTEGRATIONKIT_API UDescribeMatchmaking_Async : public UGameliftBaseFunction

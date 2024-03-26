@@ -3,6 +3,8 @@
 
 #include "GameliftObject.h"
 
+#include "aws/crt/UUID.h"
+
 DECLARE_LOG_CATEGORY_EXTERN(LogGameliftIK, Log, All);
 DEFINE_LOG_CATEGORY(LogGameliftIK);
 
@@ -98,6 +100,11 @@ bool UGameliftObject::ShutdownGameLift(UObject* WorldContextObject)
 	options.loggingOptions.logLevel = Aws::Utils::Logging::LogLevel::Info;
 	Aws::ShutdownAPI(options);
 	return true;
+}
+
+FString UGameliftObject::RandomUUID(UObject* WorldContextObject)
+{
+	return Aws::Crt::UUID().ToString().c_str();
 }
 
 void UGameliftObject::SetupServer(UObject* WorldContextObject)
